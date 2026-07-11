@@ -251,6 +251,9 @@ RUN /dl/binutils/configure \
 # https://sourceforge.net/p/mingw-w64/bugs/821/
 RUN sed -i /OpenThreadToken/d /dl/mingw/mingw-w64-crt/lib32/kernel32.def
 
+COPY src/mingw-*.patch $PREFIX/src/
+RUN cat $PREFIX/src/mingw-*.patch | patch -d/dl/mingw -p1
+
 WORKDIR /x-mingw-headers
 RUN printf '#include <crtdefs.h>\n#if __has_include_next(<stddef.h>)\n#include_next <stddef.h>\n#endif\n' \
       >/dl/mingw/mingw-w64-headers/crt/stddef.h \
